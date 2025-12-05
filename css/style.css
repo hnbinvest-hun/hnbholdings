@@ -802,7 +802,33 @@ section {
 /* =======================================
    파트너 로고 슬라이더 섹션 스타일
    ======================================= */
-/* ... (partner-logos 및 관련 제목 스타일은 유지) ... */
+/* ... (제목/부제 스타일은 유지) ... */
+
+.logo-divider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 부제와 빨간 줄을 중앙에 정렬합니다. */
+    margin-bottom: 40px; 
+}
+.red-divider {
+    width: 100px; 
+    height: 1px; /* 빨간 줄이 보이지 않는다면 이 값이 1px인지 확인하세요. */
+    background-color: #e74c3c; 
+    margin: 15px 0; 
+}
+.logo-subtitle {
+    font-size: 1.25rem; 
+    font-weight: 500;
+    color: #555;
+    margin: 15px 0 0 0; 
+    text-align: center; /* 부제 텍스트 중앙 정렬 */
+}
+
+/* 로고 트랙 컨테이너: 넘치는 내용을 잘라냄 */
+.logo-track-container {
+    width: 100%;
+    overflow: hidden; 
+}
 
 /* ✨✨ 로고 트랙 (줄 바꿈 절대 방지 및 애니메이션 핵심) ✨✨ */
 .logo-track {
@@ -1111,6 +1137,7 @@ section {
     }
 
 }
+
 
 
 
