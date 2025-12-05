@@ -803,50 +803,17 @@ section {
    파트너 로고 슬라이더 섹션 스타일
    ======================================= */
 
-.partner-logos {
-    padding: 50px 0;
-    overflow: hidden; 
-    background-color: #ffffff; 
-}
-
-/* 제목/부제 스타일 (생략) */
-.logo-section-title {
-    margin-top: 0;
-    margin-bottom: 30px; 
-    text-align: center; 
-}
-.logo-divider-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    margin-bottom: 40px; 
-}
-.red-divider {
-    width: 100px; 
-    height: 1px; 
-    background-color: #e74c3c; 
-    margin: 15px 0; 
-}
-.logo-subtitle {
-    font-size: 1.25rem; 
-    font-weight: 500;
-    color: #555;
-    margin: 15px 0 0 0; 
-    text-align: center;
-}
-
-/* 로고 트랙 컨테이너: 넘치는 내용을 잘라냄 */
 .logo-track-container {
     width: 100%;
     overflow: hidden; 
 }
 
-/* ✨✨ 로고 트랙 (가장 중요) ✨✨ */
+/* ✨✨ 로고 트랙 (줄 바꿈 및 애니메이션 핵심) ✨✨ */
 .logo-track {
     display: flex; 
-    /* 1. 모든 로고와 마진을 정확히 포함할 수 있는 너비를 설정합니다. */
+    /* 1. 모든 로고의 너비를 정확히 포함합니다. */
     width: max-content; 
-    /* 2. 로고가 브라우저 너비 때문에 절대 줄 바꿈 되지 않도록 강제합니다. */
+    /* 2. 로고가 절대 줄 바꿈 되지 않도록 강제합니다. (줄 바꿈 현상 해결) */
     white-space: nowrap; 
     
     /* 애니메이션 속도 및 설정 */
@@ -854,8 +821,7 @@ section {
 }
 
 .logo-track img {
-    /* 50% 커진 크기 유지 */
-    height: 90px; 
+    height: 90px; /* 로고 크기 */
     margin: 0 60px; 
     
     /* 이미지가 줄어드는 것을 절대적으로 방지합니다. */
@@ -866,16 +832,17 @@ section {
     will-change: transform; 
 }
 
-/* ✨✨ 미세 오차 보정된 애니메이션 키프레임 ✨✨ */
+/* ✨✨ 미세 오차 보정된 애니메이션 키프레임 (끊김 현상 해결) ✨✨ */
 @keyframes slide-left {
     0% {
         transform: translateX(0);
     }
     100% {
-        /* -50.1%로 설정하여 소수점 오류 보정 및 끊김 현상 방지 */
+        /* -50% 대신 -50.1%로 설정하여 소수점 오류 보정 및 끊김 현상 방지 */
         transform: translateX(-50.1%); 
     }
 }
+
 /* ========================================
    Footer
 ======================================== */
@@ -1143,4 +1110,5 @@ section {
     }
 
 }
+
 
