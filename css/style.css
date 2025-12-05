@@ -802,17 +802,28 @@ section {
 /* =======================================
    파트너 로고 슬라이더 섹션 스타일
    ======================================= */
-/* ... (제목/부제 스타일은 유지) ... */
 
+.partner-logos {
+    padding: 50px 0;
+    overflow: hidden; 
+    background-color: #ffffff; 
+}
+
+/* 제목/부제 스타일 */
+.logo-section-title {
+    margin-top: 0;
+    margin-bottom: 30px; 
+    text-align: center !important; /* ✨✨ 제목 중앙 정렬 강제 적용 (수정) ✨✨ */
+}
 .logo-divider-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* 부제와 빨간 줄을 중앙에 정렬합니다. */
+    align-items: center; 
     margin-bottom: 40px; 
 }
 .red-divider {
     width: 100px; 
-    height: 1px; /* 빨간 줄이 보이지 않는다면 이 값이 1px인지 확인하세요. */
+    height: 1px; 
     background-color: #e74c3c; 
     margin: 15px 0; 
 }
@@ -821,7 +832,7 @@ section {
     font-weight: 500;
     color: #555;
     margin: 15px 0 0 0; 
-    text-align: center; /* 부제 텍스트 중앙 정렬 */
+    text-align: center;
 }
 
 /* 로고 트랙 컨테이너: 넘치는 내용을 잘라냄 */
@@ -833,11 +844,11 @@ section {
 /* ✨✨ 로고 트랙 (줄 바꿈 절대 방지 및 애니메이션 핵심) ✨✨ */
 .logo-track {
     display: flex; 
-    /* 1. 줄 바꿈을 절대적으로 금지합니다. (✨추가됨) */
+    /* 1. 줄 바꿈을 절대적으로 금지합니다. (✨추가/강화) */
     flex-wrap: nowrap; 
     /* 2. 모든 로고와 마진을 정확히 포함할 수 있는 너비를 설정합니다. */
     width: max-content; 
-    /* 3. 최소 너비를 100%로 설정하여 뷰포트보다 작아지는 것을 방지합니다. (✨추가됨) */
+    /* 3. 최소 너비를 100%로 설정하여 뷰포트보다 작아지는 것을 방지합니다. (✨추가) */
     min-width: 100%; 
     /* 4. 텍스트 줄 바꿈 방지 (보조) */
     white-space: nowrap; 
@@ -847,7 +858,6 @@ section {
 }
 
 .logo-track img {
-    /* 50% 커진 크기 유지 */
     height: 90px; 
     margin: 0 60px; 
     
@@ -1137,6 +1147,7 @@ section {
     }
 
 }
+
 
 
 
