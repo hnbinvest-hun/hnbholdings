@@ -804,85 +804,76 @@ section {
    ======================================= */
 
 .partner-logos {
-    padding: 50px 0; /* 제목이 추가되었으므로 상하 여백을 늘려줍니다. */
-    overflow: hidden; /* 슬라이더 바깥쪽 영역을 숨겨서 깔끔하게 보입니다. */
-    background-color: #ffffff; /* 흰색 배경 */
+    padding: 50px 0;
+    overflow: hidden; 
+    background-color: #ffffff; 
 }
 
-/* 제목 스타일 (기존 section-title 클래스 스타일이 있어야 제대로 보임) */
+/* 제목/부제 스타일 (생략) */
 .logo-section-title {
     margin-top: 0;
     margin-bottom: 30px; 
     text-align: center; 
 }
-
-/* 가로선과 부제 정렬 및 여백 관리 컨테이너 */
 .logo-divider-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* 중앙 정렬 */
-    margin-bottom: 40px; /* 로고 트랙과의 아래 여백 */
+    align-items: center; 
+    margin-bottom: 40px; 
 }
-
-/* 빨간 가로선 스타일 */
 .red-divider {
-    width: 100px; /* 가로선 길이 */
-    height: 5px; /* 가로선 두께 */
-    background-color: #e74c3c; /* 빨간색 */
-    margin: 7px 0; /* 위아래 여백 */
+    width: 100px; 
+    height: 1px; 
+    background-color: #e74c3c; 
+    margin: 15px 0; 
 }
-
-/* 부제 (h4) 스타일 */
 .logo-subtitle {
-    font-size: 1.25rem; /* h4에 해당하는 크기 */
+    font-size: 1.25rem; 
     font-weight: 500;
     color: #555;
-    margin: 15px 0 0 0; /* 가로선과의 간격 조정 */
+    margin: 15px 0 0 0; 
     text-align: center;
 }
 
-/* 로고 트랙 컨테이너 */
+/* 로고 트랙 컨테이너: 넘치는 내용을 잘라냄 */
 .logo-track-container {
     width: 100%;
     overflow: hidden; 
 }
 
-/* 로고 트랙 (실제 움직이는 부분) */
+/* ✨✨ 로고 트랙 (가장 중요) ✨✨ */
 .logo-track {
     display: flex; 
-    
-    /* 다시 max-content로 돌아가 모든 로고의 너비를 정확히 포함하도록 합니다. */
+    /* 1. 모든 로고와 마진을 정확히 포함할 수 있는 너비를 설정합니다. */
     width: max-content; 
-    
-    /* 요소들이 절대 줄 바꿈 되지 않도록 설정 (필수 유지) */
+    /* 2. 로고가 브라우저 너비 때문에 절대 줄 바꿈 되지 않도록 강제합니다. */
     white-space: nowrap; 
     
-    /* 애니메이션 속도를 조금 더 느리게 조정하여 끊김을 눈치채기 어렵게 할 수 있습니다 (옵션) */
-    animation: slide-left 35s linear infinite; 
+    /* 애니메이션 속도 및 설정 */
+    animation: slide-left 30s linear infinite; 
 }
 
 .logo-track img {
-    height: 90px; /* 로고 이미지의 높이 */
-    margin: 60px; /* 로고 이미지 사이의 간격 */
-    flex-shrink: 0; /* 이미지 크기가 줄어들지 않도록 설정 */
-    opacity: 0.7; /* 약간 투명하게 설정 */
+    /* 50% 커진 크기 유지 */
+    height: 90px; 
+    margin: 0 60px; 
+    
+    /* 이미지가 줄어드는 것을 절대적으로 방지합니다. */
+    flex-shrink: 0; 
+    
+    opacity: 0.7; 
     transition: opacity 0.3s;
-	/* 성능 최적화: 브라우저에 이 요소가 변할 것임을 미리 알려 부드러운 애니메이션을 유도 */
-    will-change: transform;
+    will-change: transform; 
 }
 
-.logo-track img:hover {
-    opacity: 1; /* 마우스를 올리면 선명하게 만듭니다. */
-}
-
-/* 애니메이션 키프레임 정의: 오른쪽에서 왼쪽으로 흐르는 효과 */
+/* ✨✨ 미세 오차 보정된 애니메이션 키프레임 ✨✨ */
 @keyframes slide-left {
     0% {
         transform: translateX(0);
     }
     100% {
-        /* 전체 로고 세트 하나의 너비만큼 왼쪽으로 이동하여 끊김 없이 반복 */
-        transform: translateX(-50%); 
+        /* -50.1%로 설정하여 소수점 오류 보정 및 끊김 현상 방지 */
+        transform: translateX(-50.1%); 
     }
 }
 /* ========================================
