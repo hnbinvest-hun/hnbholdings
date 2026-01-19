@@ -492,6 +492,13 @@ section {
         margin-right: auto;
     }
 }
+/* AOS 애니메이션이 모바일에서 문제를 일으킬 경우 대비 */
+@media screen and (max-width: 768px) {
+    [data-aos] {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
 /* ========================================
    Features Section
 ======================================== */
@@ -1147,6 +1154,7 @@ section {
     }
 
 }
+
 
 
 
