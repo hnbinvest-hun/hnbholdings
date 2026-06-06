@@ -13,7 +13,7 @@ input{font-family:inherit}
 
 /* ── Layout ── */
 #app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
-#body{display:flex;flex:1;overflow:hidden}
+#body{display:flex;flex:1;overflow:hidden;position:relative}
 
 /* ── Top Bar ── */
 #topbar{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #e8e8e8;background:#fff;flex-shrink:0;z-index:100}
@@ -37,7 +37,6 @@ input{font-family:inherit}
 .chip:hover{border-color:#bbb;background:#fafafa}
 .chip.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
 .chip-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.filter-divider{}
 .sort-sel{font-size:12px;padding:5px 10px;border-radius:8px;border:1.5px solid #e0e0e0;background:#f8f8f8;color:#666;margin-left:auto;flex-shrink:0;outline:none}
 
 /* ── Map Area ── */
@@ -52,14 +51,13 @@ input{font-family:inherit}
 .lg-row{display:flex;align-items:center;gap:7px;font-size:11px;color:#555;margin-bottom:5px}
 .lg-row:last-child{margin:0}
 .lg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-#toast{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(30,30,30,.88);color:#fff;border-radius:20px;padding:7px 18px;font-size:12px;z-index:50;opacity:0;transition:opacity .25s;white-space:nowrap;pointer-events:none}
+#toast{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(30,30,30,.88);color:#fff;border-radius:20px;padding:7px 18px;font-size:12px;z-index:150;opacity:0;transition:opacity .25s;white-space:nowrap;pointer-events:none}
 #toast.show{opacity:1}
 
-/* ── API Key Banner ── */
-#api-banner{display:none}
-
-/* ── Sidebar ── */
-#sidebar{width:320px;display:flex;flex-direction:column;border-left:1px solid #ebebeb;background:#fff;flex-shrink:0;overflow:hidden}
+/* ── Sidebar (PC 기본형) ── */
+#sidebar{width:320px;display:flex;flex-direction:column;border-left:1px solid #ebebeb;background:#fff;flex-shrink:0;overflow:hidden;z-index:90;transition:transform 0.3s cubic-bezier(0.1, 0.76, 0.55, 0.94), height 0.3s ease}
+.sheet-handle{display:none;width:100%;padding:8px 0;cursor:pointer;background:#fff;align-items:center;justify-content:center;border-bottom:1px solid #f0f0f0}
+.sheet-handle::before{content:'';width:36px;height:4px;background:#ddd;border-radius:2px}
 .stabs{display:flex;border-bottom:1px solid #ebebeb;flex-shrink:0}
 .stab{flex:1;padding:11px 6px;font-size:12px;font-weight:500;text-align:center;border:none;background:transparent;color:#999;border-bottom:2.5px solid transparent;transition:color .15s}
 .stab.on{color:#1D9E75;border-bottom-color:#1D9E75}
@@ -67,7 +65,7 @@ input{font-family:inherit}
 .cat-bar::-webkit-scrollbar{display:none}
 .ctab{font-size:11px;padding:4px 11px;border-radius:12px;border:1.5px solid #e8e8e8;background:transparent;color:#888;font-weight:500;white-space:nowrap}
 .ctab.on{background:#F1EFE8;color:#2C2C2A;border-color:#ccc}
-.sb-body{flex:1;overflow-y:auto}
+.sb-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .sb-body::-webkit-scrollbar{width:4px}
 .sb-body::-webkit-scrollbar-thumb{background:#e0e0e0;border-radius:2px}
 
@@ -139,6 +137,7 @@ input{font-family:inherit}
 .rv-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
 .rv-user-row{display:flex;align-items:center;gap:8px}
 .rv-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.rv-uname覆{font-size:12px;font-weight:600;color:#111}
 .rv-uname{font-size:12px;font-weight:600;color:#111}
 .rv-date{font-size:11px;color:#ccc}
 .rv-stars{font-size:12px;color:#E8A020}
@@ -178,6 +177,7 @@ input{font-family:inherit}
 .saved-ico svg{width:18px;height:18px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .saved-info{flex:1}
 .saved-name{font-size:13px;font-weight:600;color:#111}
+.saved-sub覆{font-size:11px;color:#bbb;margin-top:1px}
 .saved-sub{font-size:11px;color:#bbb;margin-top:1px}
 .saved-del{background:none;border:none;color:#ddd;font-size:18px;padding:4px}
 
@@ -198,6 +198,41 @@ input{font-family:inherit}
 .nav-item svg{width:22px;height:22px;stroke:#bbb;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .nav-item.on{color:#1D9E75}
 .nav-item.on svg{stroke:#1D9E75}
+
+/* ══════════════════════════════════════════════
+   📱 MOBILE RESPONSIVE OPTIMIZATION (Bottom Sheet)
+══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  #body { flex-direction: column; }
+  
+  /* 사이드바를 하단 고정 시트 구조로 전환 */
+  #sidebar {
+    width: 100%;
+    height: 180px; /* 기본 접힌 상태 높이 */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-left: none;
+    border-top: 1px solid #e0e0e0;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    box-shadow: 0 -3px 12px rgba(0,0,0,0.12);
+    transform: translateY(0);
+  }
+  
+  /* 드래그 및 열기용 상단 핸들 노출 */
+  .sheet-handle { display: flex; }
+  
+  /* 지도가 하단 시트에 가려지지 않도록 패딩 보정 */
+  #map-wrap { margin-bottom: 50px; }
+  .map-ctrl { top: inherit; bottom: 150px; right: 12px; }
+  #legend { bottom: 150px; left: 12px; padding: 6px 10px; font-size: 10px; }
+  
+  /* 시트 상태 세팅별 스타일 */
+  #sidebar.sheet-collapsed { height: 60px; }
+  #sidebar.sheet-half { height: 45vh; }
+  #sidebar.sheet-full { height: 82vh; }
+}
 </style>
 </head>
 <body>
@@ -208,7 +243,7 @@ input{font-family:inherit}
       <div class="logo-mark">
         <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
       </div>
-      <span class="logo-text">Halal & Friendly Seoul</span>
+      <span class="logo-text">K-Map</span>
     </a>
     <div class="search-wrap">
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
@@ -246,7 +281,7 @@ input{font-family:inherit}
     <div id="map-wrap">
       <div id="gmap"></div>
 
-      <div class="map-ctrl" style="top:20px">
+      <div class="map-ctrl" id="mapCtrl">
         <button class="mc-btn" title="My Location" onclick="goMyLocation()">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
         </button>
@@ -255,19 +290,19 @@ input{font-family:inherit}
         </button>
       </div>
 
-      <div id="legend" style="bottom:50px">
+      <div id="legend" id="mapLegend">
         <div class="lg-row"><div class="lg-dot" style="background:#1D9E75"></div>Halal Certified</div>
         <div class="lg-row"><div class="lg-dot" style="background:#5DCAA5"></div>Halal Friendly</div>
         <div class="lg-row"><div class="lg-dot" style="background:#378ADD"></div>Pork-Free</div>
         <div class="lg-row"><div class="lg-dot" style="background:#639922"></div>Vegetarian</div>
-        <div class="lg-row"><div class="lg-dot" style="background:#BA7517"></div>Hotel</div>
-        <div class="lg-row"><div class="lg-dot" style="background:#7F77DD"></div>Attraction</div>
       </div>
 
       <div id="toast"></div>
     </div>
 
-    <div id="sidebar">
+    <div id="sidebar" class="sheet-half">
+      <div class="sheet-handle" onclick="toggleMobileSheet()"></div>
+      
       <div class="stabs" id="stabs">
         <button class="stab on" data-tab="list">Places</button>
         <button class="stab" data-tab="detail">Detail</button>
@@ -281,6 +316,7 @@ input{font-family:inherit}
         <button class="ctab" data-cat="attraction">Attractions</button>
       </div>
       <div class="sb-body" id="sbBody"></div>
+      
       <div class="bottom-nav">
         <button class="nav-item on" data-nav="map" onclick="navClick('map')">
           <svg viewBox="0 0 24 24"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg>Map
@@ -314,19 +350,12 @@ const PLACES = [
   {id:8,name:"Myeongdong Sky Hostel",area:"명동",addr:"Myeongdong-gil 30, Jung-gu",cat:"hotel",tags:["halal-f"],lat:37.5635,lng:126.9840,rating:4.4,reviews:301,open:true,hours:"24h check-in",cert:"",phone:"+82-2-318-1234",desc:"Budget-friendly hostel in Myeongdong. Halal-friendly breakfast, prayer room on 3F, multilingual staff."},
   {id:9,name:"N Seoul Tower",area:"남산",addr:"Namsangongwon-gil 105, Yongsan-gu",cat:"attraction",tags:[],lat:37.5512,lng:126.9882,rating:4.9,reviews:2841,open:true,hours:"10:00–23:00",cert:"",phone:"+82-2-3455-9277",desc:"Seoul's iconic landmark on Namsan. Halal-certified café on 2F, prayer room in basement. Breathtaking city views."},
   {id:10,name:"Gyeongbokgung Palace",area:"경복궁",addr:"Sajik-ro 161, Jongno-gu",cat:"attraction",tags:[],lat:37.5796,lng:126.9770,rating:4.8,reviews:3201,open:true,hours:"09:00–18:00",cert:"",phone:"+82-2-3700-3900",desc:"Korea's largest Joseon-dynasty palace. Halal food vendors near the main gate. UNESCO cultural heritage site."},
-  {id:11,name:"Bukchon Hanok Village",area:"북촌",addr:"Gyedong-gil 37, Jongno-gu",cat:"attraction",tags:[],lat:37.5826,lng:126.9830,rating:4.7,reviews:1523,open:true,hours:"09:00–18:00",cert:"",phone:"",desc:"Traditional Korean hanok architecture. UNESCO heritage site. Nearby halal restaurants within 5-minute walk."},
-  {id:12,name:"Bangtan Halal Mart",area:"이태원",addr:"Usadan-ro 19, Yongsan-gu",cat:"restaurant",tags:["halal-f","pork"],lat:37.5348,lng:126.9930,rating:4.1,reviews:45,open:true,hours:"09:00–21:00",cert:"",phone:"+82-10-9876-5432",desc:"Convenience store and deli with full range of halal-certified packaged foods, snacks, and fresh deli items."},
 ];
 
 const REVIEWS = {
   1:[{user:"Ahmed K.",flag:"🇸🇦",av:"AK",bg:"#E1F5EE",tc:"#085041",stars:5,text:"Best halal food in Seoul! The lamb is incredibly tender. Staff spoke English well.",date:"2 days ago"},
-     {user:"Fatima L.",flag:"🇲🇾",av:"FL",bg:"#9FE1CB",tc:"#04342C",stars:5,text:"Found this on K-Map and it was a lifesaver. Proper halal cert displayed at entrance!",date:"5 days ago"},
-     {user:"Omar J.",flag:"🇦🇪",av:"OJ",bg:"#E6F1FB",tc:"#042C53",stars:4,text:"Great food, worth it for quality halal in Korea. Itaewon location is perfect.",date:"1 week ago"},
-     {user:"Sara M.",flag:"🇬🇧",av:"SM",bg:"#EEEDFE",tc:"#26215C",stars:5,text:"Amazing hummus and the lamb chops were outstanding. Must visit!",date:"2 weeks ago"}],
-  9:[{user:"Sarah M.",flag:"🇬🇧",av:"SM",bg:"#EEEDFE",tc:"#26215C",stars:5,text:"Amazing views of Seoul! The halal café on 2F was a pleasant surprise.",date:"3 days ago"},
-     {user:"Raj P.",flag:"🇮🇳",av:"RP",bg:"#FAEEDA",tc:"#412402",stars:5,text:"Night views are breathtaking. Vegetarian options available too.",date:"1 week ago"}],
-  5:[{user:"Emma W.",flag:"🇦🇺",av:"EW",bg:"#EAF3DE",tc:"#173404",stars:5,text:"Finally a truly vegan restaurant in Seoul! Every dish was delicious.",date:"4 days ago"},
-     {user:"Liu Y.",flag:"🇨🇳",av:"LY",bg:"#FAEEDA",tc:"#412402",stars:4,text:"Great vegan bibimbap! Worth the trip.",date:"2 weeks ago"}],
+     {user:"Fatima L.",flag:"🇲🇾",av:"FL",bg:"#9FE1CB",tc:"#04342C",stars:5,text:"Found this on K-Map and it was a lifesaver. Proper halal cert displayed at entrance!",date:"5 days ago"}],
+  9:[{user:"Sarah M.",flag:"🇬🇧",av:"SM",bg:"#EEEDFE",tc:"#26215C",stars:5,text:"Amazing views of Seoul! The halal café on 2F was a pleasant surprise.",date:"3 days ago"}]
 };
 
 /* ══════════════════════════════════════════════
@@ -336,7 +365,31 @@ let map = null, markers = {}, infoWindow = null, mapType = 'roadmap';
 let activeFilter='all', activeCat='all', activeTab='list', selectedId=null, savedIds=new Set(), searchQ='', sortMode='dist', reviewStars=5;
 
 /* ══════════════════════════════════════════════
-   GOOGLE MAPS INIT (Language Fixed to English)
+   MOBILE BOTTOM SHEET TOGGLE
+══════════════════════════════════════════════ */
+function toggleMobileSheet() {
+  const sheet = document.getElementById('sidebar');
+  if (sheet.classList.contains('sheet-collapsed')) {
+    sheet.classList.remove('sheet-collapsed');
+    sheet.classList.add('sheet-half');
+  } else if (sheet.classList.contains('sheet-half')) {
+    sheet.classList.remove('sheet-half');
+    sheet.classList.add('sheet-full');
+  } else {
+    sheet.classList.remove('sheet-full');
+    sheet.classList.add('sheet-collapsed');
+  }
+}
+
+function setSheetState(state) {
+  if (window.innerWidth > 768) return; // 모바일 스크린에서만 작동
+  const sheet = document.getElementById('sidebar');
+  sheet.classList.remove('sheet-collapsed', 'sheet-half', 'sheet-full');
+  sheet.classList.add('sheet-' + state);
+}
+
+/* ══════════════════════════════════════════════
+   GOOGLE MAPS INIT (Fixed to English)
 ══════════════════════════════════════════════ */
 function initMap() {
   map = new google.maps.Map(document.getElementById('gmap'), {
@@ -349,7 +402,7 @@ function initMap() {
     zoomControlOptions: { position: google.maps.ControlPosition.RIGHT_TOP },
     styles: [
       { featureType:'poi',elementType:'labels',stylers:[{visibility:'off'}] },
-      { featureType:'transit',elementType:'labels.icon',stylers:[{visibility:'off'}] },
+      { featureType:'transit',elementType:'labels.icon',stylers:[{visibility:'off'}] }
     ]
   });
 
@@ -430,68 +483,38 @@ function openInfoWindow(p, marker) {
 
   renderMarkers();
   if (activeTab === 'list') renderList();
+  setSheetState('half'); // 마커 클릭 시 정보 식별이 쉽도록 중간 높이로 자동 변경
 }
 
 function loadGoogleMapsWithKey(key) {
   const s = document.createElement('script');
-  // hl=en 매개변수를 주어 구글 맵 구성요소 및 라벨을 영어 기반으로 가져옵니다.
   s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap&language=en&region=KR&libraries=places&hl=en`;
   s.async = true;
-  s.onerror = () => showToast('API Key error or Maps API disabled');
   document.head.appendChild(s);
 }
 
-/* ══════════════════════════════════════════════
-   HELPERS
-══════════════════════════════════════════════ */
-const TAG_MAP = {
-  halal:['Halal Certified','tag-h'], 'halal-f':['Halal Friendly','tag-hf'],
-  pork:['Pork-Free','tag-p'], veg:['Vegetarian','tag-v']
-};
-function buildTags(tags) {
-  return tags.filter(t=>TAG_MAP[t]).map(t=>`<span class="tag ${TAG_MAP[t][1]}">${TAG_MAP[t][0]}</span>`).join('');
-}
-function starsStr(n, size=11) {
-  return `<span style="color:#E8A020;font-size:${size}px">${'★'.repeat(Math.round(n))}${'☆'.repeat(5-Math.round(n))}</span>`;
-}
+/* ── Helpers & Rendering ── */
+const TAG_MAP = { halal:['Halal Certified','tag-h'], 'halal-f':['Halal Friendly','tag-hf'], pork:['Pork-Free','tag-p'], veg:['Vegetarian','tag-v'] };
+function buildTags(tags) { return tags.filter(t=>TAG_MAP[t]).map(t=>`<span class="tag ${TAG_MAP[t][1]}">${TAG_MAP[t][0]}</span>`).join(''); }
+function starsStr(n, size=11) { return `<span style="color:#E8A020;font-size:${size}px">${'★'.repeat(Math.round(n))}${'☆'.repeat(5-Math.round(n))}</span>`; }
 function dist(id) { return ((id*0.37+0.3)%2.1+0.1).toFixed(1); }
-
-function matchF(p) {
-  if (activeFilter==='all') return true;
-  if (activeFilter==='hotel') return p.cat==='hotel';
-  if (activeFilter==='attraction') return p.cat==='attraction';
-  return p.tags.includes(activeFilter);
-}
+function matchF(p) { if (activeFilter==='all') return true; if (activeFilter==='hotel') return p.cat==='hotel'; if (activeFilter==='attraction') return p.cat==='attraction'; return p.tags.includes(activeFilter); }
 function matchC(p) { return activeCat==='all' || p.cat===activeCat; }
-function matchS(p) {
-  if (!searchQ) return true;
-  return p.name.toLowerCase().includes(searchQ) || p.addr.toLowerCase().includes(searchQ) || p.area.toLowerCase().includes(searchQ);
-}
-function visiblePlaces() {
-  let list = PLACES.filter(p=>matchF(p)&&matchC(p)&&matchS(p));
-  if (sortMode==='rating') list.sort((a,b)=>b.rating-a.rating);
-  else if (sortMode==='reviews') list.sort((a,b)=>b.reviews-a.reviews);
-  else list.sort((a,b)=>parseFloat(dist(a.id))-parseFloat(dist(b.id)));
-  return list;
-}
+function matchS(p) { if (!searchQ) return true; return p.name.toLowerCase().includes(searchQ) || p.addr.toLowerCase().includes(searchQ) || p.area.toLowerCase().includes(searchQ); }
+function visiblePlaces() { let list = PLACES.filter(p=>matchF(p)&&matchC(p)&&matchS(p)); if (sortMode==='rating') list.sort((a,b)=>b.rating-a.rating); else if (sortMode==='reviews') list.sort((a,b)=>b.reviews-a.reviews); else list.sort((a,b)=>parseFloat(dist(a.id))-parseFloat(dist(b.id))); return list; }
 
 let toastT = null;
 function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(toastT);
-  toastT = setTimeout(()=>t.classList.remove('show'), 2600);
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove('show'), 2600);
 }
 
-/* ══════════════════════════════════════════════
-   RENDER
-══════════════════════════════════════════════ */
 function renderList() {
   const body = document.getElementById('sbBody');
   document.getElementById('catBar').style.display = 'flex';
   const vis = visiblePlaces();
   if (!vis.length) {
-    body.innerHTML = `<div class="empty"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><line x1="4" y1="4" x2="20" y2="20"/></svg><p>No places match your filters.</p></div>`;
+    body.innerHTML = `<div class="empty"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><line x1="4" y1="4" x2="20" y2="20"/></svg><p>No places match filters.</p></div>`;
     return;
   }
   body.innerHTML = vis.map(p => `
@@ -499,10 +522,7 @@ function renderList() {
       <div class="pc-top"><div class="pc-name">${p.name}</div><div class="pc-dist">${dist(p.id)} km</div></div>
       <div class="pc-area">${p.area} · ${p.cat}</div>
       <div class="pc-tags">${buildTags(p.tags)}</div>
-      <div class="pc-bottom">
-        ${starsStr(p.rating)} <span class="pc-count">(${p.reviews})</span>
-        <span class="${p.open?'pc-open':'pc-closed'}">${p.open?'· Open now':'· Closed'}</span>
-      </div>
+      <div class="pc-bottom">${starsStr(p.rating)} <span class="pc-count">(${p.reviews})</span><span class="${p.open?'pc-open':'pc-closed'}">${p.open?'· Open':'· Closed'}</span></div>
     </div>
   `).join('');
   body.querySelectorAll('.pcard').forEach(c => c.addEventListener('click', ()=>selectPlace(+c.dataset.id)));
@@ -514,39 +534,19 @@ function renderDetail(id) {
   const body = document.getElementById('sbBody');
   if (!p) { body.innerHTML=`<div class="empty"><svg viewBox="0 0 24 24"><path d="M15 15l6 6M9.5 4a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg><p>Select a place on the map.</p></div>`; return; }
   const saved = savedIds.has(id);
-  const iconMap = {restaurant:'<path d="M3 2l1.5 5H19.5L21 2"/><path d="M2 7h20v2a10 10 0 0 1-20 0V7z"/><path d="M12 14v8M8 22h8"/>',hotel:'<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/><path d="M3 11h18"/>',attraction:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>'};
   const color = markerColor(p);
   body.innerHTML = `
     <div class="dp">
-      <div class="dp-hero" style="background:${color}18"><svg width="42" height="42" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">${iconMap[p.cat]||iconMap.restaurant}</svg></div>
       <div class="dp-name">${p.name}</div>
       <div class="dp-addr">${p.addr}</div>
       <div class="dp-tags">${buildTags(p.tags)}</div>
-      <div class="dp-rating">
-        <div class="dp-score">${p.rating}</div>
-        <div class="dp-score-right">
-          <div class="stars-lg">${'★'.repeat(Math.round(p.rating))}${'☆'.repeat(5-Math.round(p.rating))}</div>
-          <div class="rev-cnt">${p.reviews} reviews</div>
-        </div>
-      </div>
-      ${p.cert?`<div class="dp-sec"><div class="dp-label"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Halal Cert</div><span class="cert-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${p.cert}</span></div>`:''}
-      <div class="dp-sec"><div class="dp-label"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Hours</div><div class="dp-val">${p.hours}<span class="${p.open?'dp-open-badge':'dp-open-badge dp-closed-badge'}">${p.open?'Open now':'Closed'}</span></div></div>
-      <div class="dp-sec"><div class="dp-label"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Address</div><div class="dp-val" style="font-size:12px">${p.addr}</div></div>
-      ${p.phone?`<div class="dp-sec"><div class="dp-label"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Phone</div><div class="dp-val">${p.phone}</div></div>`:''}
+      <div class="dp-rating"><div class="dp-score">${p.rating}</div><div><div>${'★'.repeat(Math.round(p.rating))}</div><div class="rev-cnt">${p.reviews} reviews</div></div></div>
+      <div class="dp-sec"><div class="dp-label">Hours</div><div class="dp-val">${p.hours}</div></div>
       <p class="dp-desc">${p.desc}</p>
       <div class="dp-btns">
-        <button class="btn-primary" onclick="goDirections(${id})">
-          <svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-          Get Directions (Google Maps)
-        </button>
-        <button class="btn-sec" onclick="switchTab('reviews')">
-          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Read Reviews (${(REVIEWS[id]||[]).length})
-        </button>
-        <button class="btn-ghost ${saved?'saved':''}" id="saveBtn" onclick="toggleSave(${id})">
-          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          ${saved?'Saved ♥':'Save Place'}
-        </button>
+        <button class="btn-primary" onclick="goDirections(${id})">Get Directions (Google Maps)</button>
+        <button class="btn-sec" onclick="switchTab('reviews')">Read Reviews</button>
+        <button class="btn-ghost ${saved?'saved':''}" onclick="toggleSave(${id})">${saved?'Saved ♥':'Save Place'}</button>
       </div>
     </div>
   `;
@@ -556,86 +556,28 @@ function renderReviews(id) {
   const p = PLACES.find(x=>x.id===id);
   document.getElementById('catBar').style.display = 'none';
   const body = document.getElementById('sbBody');
-  if (!p) { body.innerHTML=`<div class="empty"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><p>Select a place first.</p></div>`; return; }
+  if (!p) { body.innerHTML=`<div class="empty"><p>Select a place first.</p></div>`; return; }
   const rvs = REVIEWS[id]||[];
-  const dist2 = [0,0,0,0,0]; rvs.forEach(r=>dist2[5-r.stars]++);
   body.innerHTML = `
-    <div class="rv-top">
-      <div style="font-size:13px;font-weight:700;margin-bottom:8px">${p.name}</div>
-      <div class="rv-summary">
-        <div class="rv-big">${p.rating}</div>
-        <div class="rv-bars">
-          ${[5,4,3,2,1].map(n=>`<div class="rv-bar-row"><span class="rv-bar-n">${n}</span><div class="rv-track"><div class="rv-fill" style="width:${rvs.length?dist2[5-n]/rvs.length*100:0}%"></div></div><span class="rv-cnt">${dist2[5-n]}</span></div>`).join('')}
-        </div>
-      </div>
-    </div>
-    ${rvs.map(rv=>`
-      <div class="rv-item">
-        <div class="rv-head">
-          <div class="rv-user-row">
-            <div class="rv-avatar" style="background:${rv.bg};color:${rv.tc}">${rv.av}</div>
-            <div><div class="rv-uname">${rv.flag} ${rv.user}</div><div class="rv-date">${rv.date}</div></div>
-          </div>
-          <div class="rv-stars">${'★'.repeat(rv.stars)}</div>
-        </div>
-        <div class="rv-text">${rv.text}</div>
-      </div>
-    `).join('')}
-    <div class="rv-write">
-      <div class="rv-write-title">Write a review</div>
-      <div class="star-picker" id="starPicker">
-        ${[1,2,3,4,5].map(n=>`<button class="star-btn ${n<=reviewStars?'lit':''}" data-s="${n}">★</button>`).join('')}
-      </div>
-      <textarea class="rv-textarea" placeholder="Share your experience for other Muslim travelers..."></textarea>
-      <button class="rv-submit" onclick="submitReview(${id})">Submit Review</button>
-    </div>
+    <div class="rv-top"><div style="font-weight:700">${p.name}</div></div>
+    ${rvs.map(rv=>`<div class="rv-item"><div class="rv-head"><div class="rv-uname">${rv.flag} ${rv.user}</div><div>${'★'.repeat(rv.stars)}</div></div><div class="rv-text">${rv.text}</div></div>`).join('')}
   `;
-  body.querySelectorAll('.star-btn').forEach(b=>{
-    b.addEventListener('click',()=>{
-      reviewStars=+b.dataset.s;
-      body.querySelectorAll('.star-btn').forEach((x,i)=>x.classList.toggle('lit',i<reviewStars));
-    });
-  });
 }
 
 function renderRoute(id) {
   const p = PLACES.find(x=>x.id===id);
   document.getElementById('catBar').style.display = 'none';
   const body = document.getElementById('sbBody');
-  if (!p) { body.innerHTML=`<div class="empty"><svg viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg><p>Select a destination first.</p></div>`; return; }
+  if (!p) { body.innerHTML=`<div class="empty"><p>Select a destination first.</p></div>`; return; }
   body.innerHTML = `
     <div class="route-wrap">
-      <div class="route-dest">To: ${p.name}<br><span style="font-size:11px;color:#bbb">${p.addr}</span></div>
-      
-      <div class="route-modes">
-        <button class="rmode-single" onclick="openGoogleMapsRoute(${id})">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-          Route (Google Maps)
-        </button>
-      </div>
-
+      <div class="route-dest">To: ${p.name}</div>
+      <div class="route-modes"><button class="rmode-single" onclick="openGoogleMapsRoute(${id})">Route (Google Maps)</button></div>
       <div class="route-summary-box">
         <div class="rs-cell"><div class="rs-val">260<span>m</span></div><div class="rs-lab">Distance</div></div>
         <div class="rs-cell"><div class="rs-val">4<span>min</span></div><div class="rs-lab">Walk</div></div>
-        <div class="rs-cell"><div class="rs-val">12<span>min</span></div><div class="rs-lab">Transit</div></div>
       </div>
-      ${[
-        {svg:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',text:'Start from your current location',dist:''},
-        {svg:'<path d="M5 12h14M12 5l7 7-7 7"/>',text:'Head northeast on Itaewon-ro toward Hamilton Hotel',dist:'120 m · 1 min 30 sec'},
-        {svg:'<path d="M9 18l6-6-6-6"/>',text:'Turn right onto Noksapyeong-daero',dist:'80 m · 1 min'},
-        {svg:'<path d="M5 12h14M12 5l7 7-7 7"/>',text:'Continue straight 60m — destination on left',dist:'60 m · 45 sec'},
-        {svg:'<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',text:`Arrive at ${p.name}`,dist:''},
-      ].map(s=>`
-        <div class="step-row">
-          <div class="step-icon"><svg width="14" height="14" fill="none" stroke="#085041" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">${s.svg}</svg></div>
-          <div><div class="step-text">${s.text}</div>${s.dist?`<div class="step-dist">${s.dist}</div>`:''}</div>
-        </div>
-      `).join('')}
-      <button class="btn-primary" style="margin-top:14px" onclick="openGoogleMapsRoute(${id})">
-        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-        Open in Google Maps
-      </button>
-      <div class="gmaps-note">Routes will layout automatically in English upon opening Google Maps.</div>
+      <button class="btn-primary" onclick="openGoogleMapsRoute(${id})">Open in Google Maps</button>
     </div>
   `;
 }
@@ -645,53 +587,18 @@ function renderSaved() {
   document.getElementById('stabs').style.display = 'none';
   const body = document.getElementById('sbBody');
   const list = PLACES.filter(p=>savedIds.has(p.id));
-  if (!list.length) { body.innerHTML=`<div class="empty"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><p>No saved places yet.</p></div>`; return; }
-  body.innerHTML = `<div class="saved-list">`+list.map(p=>`
-    <div class="saved-item" onclick="selectPlace(${p.id})">
-      <div class="saved-ico" style="background:${markerColor(p)}18">
-        <svg width="18" height="18" fill="none" stroke="${markerColor(p)}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      </div>
-      <div class="saved-info">
-        <div class="saved-name">${p.name}</div>
-        <div class="saved-sub">${p.area} · ${starsStr(p.rating,10)} ${p.rating}</div>
-      </div>
-      <button class="saved-del" onclick="event.stopPropagation();toggleSave(${p.id});renderSaved()">×</button>
-    </div>
-  `).join('')+`</div>`;
+  if (!list.length) { body.innerHTML=`<div class="empty"><p>No saved places yet.</p></div>`; return; }
+  body.innerHTML = `<div class="saved-list">`+list.map(p=>`<div class="saved-item" onclick="selectPlace(${p.id})"><div class="saved-name">${p.name}</div></div>`).join('')+`</div>`;
 }
 
 function renderProfile() {
   document.getElementById('catBar').style.display = 'none';
   document.getElementById('stabs').style.display = 'none';
   const body = document.getElementById('sbBody');
-  body.innerHTML = `
-    <div class="profile-wrap">
-      <div class="profile-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-      <div class="profile-name">Guest User</div>
-      <div class="profile-sub">Sign in to save places and write reviews</div>
-      <button class="btn-primary" style="margin-bottom:8px" onclick="showToast('Google OAuth — Phase 2 Implementation')">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M2 12h20"/></svg>
-        Continue with Google
-      </button>
-      <button class="btn-ghost" style="margin-bottom:18px" onclick="showToast('Apple Sign-In — Phase 2 Implementation')">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#555" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c1.5 0 2.75-.6 3.95-1.5C17.5 18.3 18 17 18 15.5c0-1.9-1.5-3.5-3.5-3.5-1 0-1.75.4-2.5.4s-1.5-.4-2.5-.4C7.5 12 6 13.6 6 15.5c0 1.5.5 2.8 1.55 3.94C8.75 20.34 10 20.94 12 20.94z"/><path d="M12 12c0-2 1-3.5 2.5-4.5C13.5 6.5 12 5.5 10.5 5.5 9 5.5 8 6.5 8 8s1 2.5 2.5 2.5H12z"/></svg>
-        Continue with Apple
-      </button>
-      <div>
-        ${[['🌐','Language','English'],['📍','Default area','Seoul'],['🔔','Notifications','On'],['🔒','Privacy policy','View']].map(([ic,label,val])=>`
-          <div class="pref-row" onclick="showToast('${label} setting — Phase 2')">
-            <div class="pref-left"><span>${ic}</span>${label}</div>
-            <div class="pref-right">${val} ›</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `;
+  body.innerHTML = `<div class="profile-wrap"><div class="profile-name">Guest User</div><button class="btn-primary" onclick="showToast('OAuth Implementation')">Continue with Google</button></div>`;
 }
 
-/* ══════════════════════════════════════════════
-   ACTIONS
-══════════════════════════════════════════════ */
+/* ── Actions ── */
 window.__kmapSelect = id => selectPlace(id);
 
 function selectPlace(id) {
@@ -707,6 +614,7 @@ function selectPlace(id) {
     }
   }
   updateNav('map');
+  setSheetState('half'); // 모바일에서 선택 후 내용을 파악하기 쉽게 창 높이 최적화
 }
 
 function switchTab(tab) {
@@ -721,86 +629,44 @@ function switchTab(tab) {
 function navClick(nav) {
   updateNav(nav);
   document.getElementById('stabs').style.display = nav==='map' ? 'flex' : 'none';
-  if (nav==='map') { resetApp(); }
-  else if (nav==='route') { activeTab='route'; renderRoute(selectedId); }
-  else if (nav==='saved') renderSaved();
-  else if (nav==='profile') renderProfile();
+  if (nav==='map') { resetApp(); setSheetState('half'); }
+  else if (nav==='route') { activeTab='route'; renderRoute(selectedId); setSheetState('full'); }
+  else if (nav==='saved') { renderSaved(); setSheetState('full'); }
+  else if (nav==='profile') { renderProfile(); setSheetState('full'); }
 }
 
-function updateNav(nav) {
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('on',n.dataset.nav===nav));
-}
-
-function toggleSave(id) {
-  savedIds.has(id) ? savedIds.delete(id) : savedIds.add(id);
-  if (activeTab==='detail') renderDetail(id);
-  showToast(savedIds.has(id) ? '💚 Place saved!' : 'Removed from saved');
-}
-
-function submitReview(pid) {
-  const ta = document.querySelector('.rv-textarea');
-  if (!ta || !ta.value.trim()) { showToast('Please write something first'); return; }
-  if (!REVIEWS[pid]) REVIEWS[pid]=[];
-  REVIEWS[pid].unshift({user:'You',flag:'🌍',av:'ME',bg:'#E6F1FB',tc:'#042C53',stars:reviewStars,text:ta.value.trim(),date:'Just now'});
-  renderReviews(pid);
-  showToast('Review submitted! ⭐');
-}
-
-function goDirections(id) {
-  openGoogleMapsRoute(id);
-}
-
-// 외부 구글맵 연결 주소에 hl=en 파라미터를 추가하여 강제로 영문 모드로 서비스가 제공되게끔 처리했습니다.
-function openGoogleMapsRoute(id) {
-  const p = PLACES.find(x=>x.id===id);
-  if (!p) return;
-  window.open(`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}&hl=en`, '_blank');
-}
+function updateNav(nav) { document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('on',n.dataset.nav===nav)); }
+function toggleSave(id) { savedIds.has(id) ? savedIds.delete(id) : savedIds.add(id); if (activeTab==='detail') renderDetail(id); showToast(savedIds.has(id) ? '💚 Saved!' : 'Removed'); }
+function goDirections(id) { openGoogleMapsRoute(id); }
+function openGoogleMapsRoute(id) { const p = PLACES.find(x=>x.id===id); if (!p) return; window.open(`https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}&hl=en`, '_blank'); }
 
 function goMyLocation() {
-  if (!navigator.geolocation) { showToast('Geolocation not supported'); return; }
-  showToast('Locating...');
+  if (!navigator.geolocation) { showToast('Not supported'); return; }
   navigator.geolocation.getCurrentPosition(pos => {
     if (map) map.panTo({lat:pos.coords.latitude,lng:pos.coords.longitude});
-    showToast('Moved to current location');
-  }, () => showToast('Location permission denied'));
+  }, () => showToast('Permission denied'));
 }
 
 function toggleMapType() {
-  if (!map) { showToast('Map API not loaded yet'); return; }
+  if (!map) return;
   mapType = mapType==='roadmap' ? 'satellite' : 'roadmap';
   map.setMapTypeId(mapType);
-  showToast(mapType==='satellite' ? '🛰 Satellite map' : '🗺 Street map');
 }
 
-function resetApp() {
-  updateNav('map');
-  document.getElementById('stabs').style.display = 'flex';
-  document.getElementById('catBar').style.display = 'flex';
-  switchTab('list');
-}
+function resetApp() { updateNav('map'); document.getElementById('stabs').style.display = 'flex'; document.getElementById('catBar').style.display = 'flex'; switchTab('list'); }
 
-/* ══════════════════════════════════════════════
-   EVENT LISTENERS
-══════════════════════════════════════════════ */
+/* ── Event Listeners ── */
 document.getElementById('filterbar').addEventListener('click', e=>{
   const chip = e.target.closest('.chip'); if (!chip || !chip.dataset.f) return;
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
-  chip.classList.add('on');
-  activeFilter = chip.dataset.f;
-  selectedId = null;
-  if (infoWindow) infoWindow.close();
-  renderMarkers();
-  if (activeTab==='list') renderList();
+  chip.classList.add('on'); activeFilter = chip.dataset.f; selectedId = null;
+  if (infoWindow) infoWindow.close(); renderMarkers(); if (activeTab==='list') renderList();
 });
 
 document.getElementById('catBar').addEventListener('click', e=>{
   const btn = e.target.closest('.ctab'); if (!btn) return;
   document.querySelectorAll('.ctab').forEach(c=>c.classList.remove('on'));
-  btn.classList.add('on');
-  activeCat = btn.dataset.cat;
-  renderMarkers();
-  renderList();
+  btn.classList.add('on'); activeCat = btn.dataset.cat; renderMarkers(); renderList();
 });
 
 document.getElementById('stabs').addEventListener('click', e=>{
@@ -809,23 +675,16 @@ document.getElementById('stabs').addEventListener('click', e=>{
 });
 
 document.getElementById('searchInput').addEventListener('input', e=>{
-  searchQ = e.target.value.toLowerCase();
-  renderMarkers();
-  if (activeTab==='list') renderList();
+  searchQ = e.target.value.toLowerCase(); renderMarkers(); if (activeTab==='list') renderList();
 });
 
-document.getElementById('sortSel').addEventListener('change', e=>{
-  sortMode = e.target.value;
-  if (activeTab==='list') renderList();
-});
+document.getElementById('sortSel').addEventListener('change', e=>{ sortMode = e.target.value; if (activeTab==='list') renderList(); });
 
-/* ══════════════════════════════════════════════
-   INIT
-══════════════════════════════════════════════ */
 window.addEventListener('load', ()=>{
   const fixedKey = "AIzaSyDvlGDS0KnLyUpPVT9J40Nz7x0wJqNmCaU";
   loadGoogleMapsWithKey(fixedKey);
   renderList();
+  setSheetState('half');
 });
 </script>
 </body>
