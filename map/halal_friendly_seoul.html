@@ -457,33 +457,7 @@ function renderMarkers() {
       icon,
       title: p.name,
       zIndex: isSel ? 100 : 1,
-    });
-
-    m.addListener('click', () => openInfoWindow(p, m));
-    markers[p.id] = m;
-  });
-}
-
-function openInfoWindow(p, marker) {
-  selectedId = p.id;
-  const tagHtml = buildTags(p.tags);
-  const starsStr = '★'.repeat(Math.round(p.rating)) + '☆'.repeat(5-Math.round(p.rating));
-  const color = markerColor(p);
-
-  infoWindow.setContent(`
-    <div style="padding:4px 2px;min-width:200px;font-family:'Noto Sans KR','Segoe UI',system-ui,sans-serif">
-      <div style="font-size:14px;font-weight:700;margin-bottom:2px;color:#111">${p.name}</div>
-      <div style="font-size:11px;color:#aaa;margin-bottom:7px">${p.addr}</div>
-      <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:7px">${tagHtml}</div>
-      <div style="font-size:12px;color:#E8A020;margin-bottom:10px">${starsStr} <span style="color:#bbb">${p.rating} (${p.reviews})</span></div>
-      <button onclick="window.__kmapSelect(${p.id})" style="width:100%;padding:8px;background:${color};color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer">View Details →</button>
-    </div>
-  `);
-  infoWindow.open(map, marker);
-
-  renderMarkers();
-  if (activeTab === 'list') renderList();
-  setSheetState('half'); // 마커 클릭 시 정보 식별이 쉽도록 중간 높이로 자동 변경
+    }); m.addListener('click', () => openInfoWindow(p, m)); markers[p.id] = m; }); } function openInfoWindow(p, marker) { selectedId = p.id; const tagHtml = buildTags(p.tags); const starsStr = '★'.repeat(Math.round(p.rating)) + '☆'.repeat(5-Math.round(p.rating)); const color = markerColor(p); infoWindow.setContent(` <div style="padding:4px 2px;min-width:200px;font-family:'Noto Sans KR','Segoe UI',system-ui,sans-serif"> <div style="font-size:14px;font-weight:700;margin-bottom:2px;color:#111">${p.name}</div> <div style="font-size:11px;color:#aaa;margin-bottom:7px">${p.addr}</div> <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:7px">${tagHtml}</div> <div style="font-size:12px;color:#E8A020;margin-bottom:10px">${starsStr} <span style="color:#bbb">${p.rating} (${p.reviews})</span></div> <button onclick="window.__kmapSelect(${p.id})" style="width:100%;padding:8px;background:${color};color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer">View Details →</button> </div> `); infoWindow.open(map, marker); renderMarkers(); if (activeTab === 'list') renderList(); setSheetState('half'); // 마커 클릭 시 정보 식별이 쉽도록 중간 높이로 자동 변경
 }
 
 function loadGoogleMapsWithKey(key) {
@@ -638,7 +612,13 @@ function navClick(nav) {
 function updateNav(nav) { document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('on',n.dataset.nav===nav)); }
 function toggleSave(id) { savedIds.has(id) ? savedIds.delete(id) : savedIds.add(id); if (activeTab==='detail') renderDetail(id); showToast(savedIds.has(id) ? '💚 Saved!' : 'Removed'); }
 function goDirections(id) { openGoogleMapsRoute(id); }
-function openGoogleMapsRoute(id) { const p = PLACES.find(x=>x.id===id); if (!p) return; window.open(`https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}&hl=en`, '_blank'); }
+
+function openGoogleMapsRoute(id) {
+  const p = PLACES.find(x=>x.id===id);
+  if (!p) return;
+  // 공식 Google Maps URL 웹 파라미터 구조로 수정하고 언어 설정(hl=en) 강제 지정
+  window.open(`https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}&hl=en`, '_blank');
+}
 
 function goMyLocation() {
   if (!navigator.geolocation) { showToast('Not supported'); return; }
