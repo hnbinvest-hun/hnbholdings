@@ -633,8 +633,10 @@ function goDirections(id) { openGoogleMapsRoute(id); }
 function openGoogleMapsRoute(id) {
   const p = PLACES.find(x=>x.id===id);
   if (!p) return;
-  // 공식 Google Maps URL 웹 파라미터 구조로 수정하고 언어 설정(hl=en) 강제 지정
-  window.open(`https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}&hl=en`, '_blank');
+  
+  // 구글 맵 공식 유니버설 링크 구조 (PC/모바일 앱 연동 및 hl=en 강제 영어 지정)
+  const url = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}&hl=en`;
+  window.open(url, '_blank');
 }
 
 function goMyLocation() {
